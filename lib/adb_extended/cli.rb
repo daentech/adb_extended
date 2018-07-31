@@ -49,7 +49,7 @@ module AdbExtended
       AdbExtended::Adb.pidcat(serial, options[:level], package)
     end
 
-    desc "logcat", "Lists the devices and allows you to choose one to run with logcat"
+    desc "logcat PACKAGE", "Lists the devices and allows you to choose one to run with logcat"
     method_option :level, :default => 'D', :enum => %w(V D I W E F), :aliases => '-l'
     def logcat(package = nil)
       serial = pick_device
