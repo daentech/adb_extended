@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'adb_extended/cli'
+AdbExtended::CLI.start

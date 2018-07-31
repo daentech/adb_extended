@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     adb_extended (0.1.0)
+      terminal-table
+      thor
 
 GEM
   remote: https://rubygems.org/
@@ -21,6 +23,10 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
+    thor (0.20.0)
+    unicode-display_width (1.4.0)
 
 PLATFORMS
   ruby
