@@ -9,8 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dan Gilbert"]
   spec.email         = ["ddg@daentech.co.uk"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = "Extended functinoality for adb when working with multiple connected devices"
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
