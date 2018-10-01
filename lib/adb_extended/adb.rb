@@ -58,6 +58,30 @@ module AdbExtended
       end
       exec "adb -s #{serial} logcat *:#{level} #{filter}"
     end
+
+    def self.install(path, serial = nil)
+      if serial != nil
+        exec "adb -s #{serial} install -r #{path}"
+      else
+        puts devices
+        devices.each { |device|
+          puts "Installing on #{device[:model]}"
+          exec "adb -s #{device[:serial]} install -r #{path}"
+        }
+      end
+    end
+
+    def self.uninstall(package, serial = nil)
+      if serial != nil
+        exec "adb -s #{serial} uninstall #{package}"
+      else
+        devices.each { |device|
+          puts "Uninstalling from #{device[:model]}"
+          exec "adb -s #{device[:serial]} uninstall #{package}"
+        }
+      end
+
+    end
   end
 
 end

@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dan Gilbert"]
   spec.email         = ["ddg@daentech.co.uk"]
 
-  spec.summary       = "Extended functinoality for adb when working with multiple connected devices"
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Extended functionality for adb when working with multiple connected devices"
+  spec.homepage      = "https://github.com/daentech/adb_extended"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

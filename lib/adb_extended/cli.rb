@@ -56,6 +56,28 @@ module AdbExtended
       AdbExtended::Adb.logcat(serial, options[:level], package)
     end
 
+    desc "install PATH", "Installs the provided apk on the selected device"
+    method_options :all => :boolean
+    def install(path)
+      if options.all
+        AdbExtended::Adb.install(path)
+        exit(0)
+      end
+      serial = pick_device
+      AdbExtended::Adb.install(path, serial)
+    end
+
+    desc "uninstall PACKAGE", "Uninstalls the provided package on the selected device"
+    method_options :all => :boolean
+    def uninstall(package)
+      if options.all
+        AdbExtended::Adb.uninstall(package)
+        exit(0)
+      end
+      serial = pick_device
+      AdbExtended::Adb.uninstall(package, serial)
+    end
+
     private
 
     # Returns the serial number of the chosen device
