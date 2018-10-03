@@ -63,7 +63,6 @@ module AdbExtended
       if serial != nil
         exec "adb -s #{serial} install -r #{path}"
       else
-        puts devices
         devices.each { |device|
           puts "Installing on #{device[:model]}"
           exec "adb -s #{device[:serial]} install -r #{path}"
@@ -80,8 +79,20 @@ module AdbExtended
           exec "adb -s #{device[:serial]} uninstall #{package}"
         }
       end
+    end
 
+    def self.screenshot(serial = nil)
+      t = Time.now
+      timestamp = t.strftime("%Y%m%d-%H%M%S")
+      if serial != nil
+        exec "adb -s #{serial} shell /system/bin/screencap /sdcard/screen.png && adb -s #{serial} pull /sdcard/screen.png screen-#{timestamp}.png && adb -s #{serial} shell rm /sdcard/screen.png"
+      else
+        devices.each { |device|
+          puts "Taking screenshot on #{device[:model]}"
+          stdout, stderr, status = Open3.capture3("adb -s #{device[:serial]} shell /system/bin/screencap /sdcard/screen.png && adb -s #{device[:serial]} pull /sdcard/screen.png screen-#{timestamp}-#{device[:model]}.png && adb -s #{device[:serial]} shell rm /sdcard/screen.png")
+          puts stdout
+        }
+      end
     end
   end
-
 end

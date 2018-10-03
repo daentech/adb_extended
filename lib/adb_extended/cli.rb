@@ -78,6 +78,17 @@ module AdbExtended
       AdbExtended::Adb.uninstall(package, serial)
     end
 
+    desc "screencap", "Takes a screenshot on the selected device (or all devices)"
+    method_options :all => :boolean
+    def screencap()
+      if options.all
+        AdbExtended::Adb.screenshot()
+        exit(0)
+      end
+      serial = pick_device
+      AdbExtended::Adb.screenshot(serial)
+    end
+
     private
 
     # Returns the serial number of the chosen device
