@@ -81,6 +81,18 @@ module AdbExtended
       end
     end
 
+    def self.enter_text(text, submit = false, serial = nil)
+      key_event = submit ? 66 : 61
+      if serial != nil
+        stdout, stderr, status = Open3.capture3("adb -s #{serial} shell input text #{text} && adb -s #{serial} shell input keyevent #{key_event}")
+      else
+        devices.each { |device|
+        stdout, stderr, status = Open3.capture3("adb -s #{device[:serial]} shell input text #{text} && adb -s #{device[:serial]} shell input keyevent #{key_event}")
+        }
+      end
+      sleep 0.1
+    end
+
     def self.screenshot(serial = nil)
       t = Time.now
       timestamp = t.strftime("%Y%m%d-%H%M%S")

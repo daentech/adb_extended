@@ -1,6 +1,10 @@
 require 'thor'
 require 'terminal-table'
 require 'adb_extended'
+require 'yaml'
+require 'fileutils'
+
+$configuration_file_dir = File.expand_path("~/.adb_extended")
 
 module AdbExtended
   class CLI < Thor
@@ -40,6 +44,67 @@ module AdbExtended
     def ashell
       serial = pick_device
       AdbExtended::Adb.shell(serial)
+    end
+
+    desc "login", "Allows entry of usernames and passwords and will inject it into the login screen of the selected device"
+    method_options :all => :boolean
+    def login()
+
+      # Get the username/password
+      # Show the list of existing usernames/passwords
+
+      user_file_path = "#{$configuration_file_dir}/app_users.yml"
+
+      create_config_file(user_file_path)
+
+      users = YAML.load_file(user_file_path)
+
+      unless users
+        users = {}
+      end
+
+      table = Terminal::Table.new do |t|
+        header_row = %w(# Username)
+
+        t << header_row
+        t << :separator
+        if users.size > 0
+          users.each_with_index {|(key, value), index|
+            row = [index + 1, value[:username]]
+            t.add_row row
+          }
+        end
+
+        row = [users.size + 1, "Add new user"]
+        t.add_row row
+      end
+
+      puts table
+
+      accepted_inputs = *(1..users.size + 1).map {|i| i.to_s}
+      index = ask("Select an account to login (1 - #{users.size + 1}):", :limited_to => accepted_inputs).to_i - 1
+    
+      if index > users.size - 1
+        # Create new user and save it or overwrite existing user
+        username = ask("Enter a username:")
+        password = ask("Enter a password:")
+
+        users[username] = {:username => username, :password => password}
+
+        File.open(user_file_path, "w") { |file| file.write(users.to_yaml) }
+        user = users[username]
+      else
+        user = users[users.keys[index]]
+      end
+
+      if options.all
+        AdbExtended::Adb.enter_text(user[:username], false)
+        AdbExtended::Adb.enter_text(user[:password], true)
+      else
+        device = pick_device
+        AdbExtended::Adb.enter_text(user[:username], false, device)
+        AdbExtended::Adb.enter_text(user[:password], true, device)
+      end
     end
 
     desc "pidcat PACKAGE", "Lists the devices and allows you to choose one to run with pidcat"
@@ -121,6 +186,14 @@ module AdbExtended
       accepted_inputs = *(1..devices.size).map {|i| i.to_s}
       index = ask("Select a device (1 - #{devices.size}):", :limited_to => accepted_inputs).to_i - 1
       devices[index][:serial]
+    end
+
+    def create_config_file(path)
+      dirname = File.dirname(path)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+      File.open(path, 'a+')
     end
 
   end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    adb_extended (0.1.0)
+    adb_extended (0.3.0)
       terminal-table
       thor
 
@@ -38,4 +38,4 @@ DEPENDENCIES
   rspec (~> 3.0)
 
 BUNDLED WITH
-   1.16.3
+   1.16.5
