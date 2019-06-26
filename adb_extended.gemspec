@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "adb_extended"
   spec.version       = AdbExtended::VERSION
   spec.authors       = ["Dan Gilbert"]
-  spec.email         = ["ddg@daentech.co.uk"]
+  spec.email         = ["me@dan-gilbert.uk"]
 
   spec.summary       = "Extended functionality for adb when working with multiple connected devices"
-  spec.homepage      = "https://github.com/daentech/adb_extended"
+  spec.homepage      = "https://github.com/dangilbert/adb_extended"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
